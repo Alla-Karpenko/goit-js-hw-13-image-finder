@@ -2,65 +2,58 @@
 import './styles.css';
 import NewsApiService from './js/apiService';
 import hitsTpl from './hits.hbs';
+import LoadMoreBtn from './js/load-more-btn';
 
 const refs = {
-    searchForm: document.querySelector('.search-form'),
-    gallery: document.querySelector('.gallery'),
-    //loadMoreBtn: document.querySelector('[data-action="load-more"]')
-    sentinel: document.querySelector('#sentinel'),
-}
+    searchForm: document.querySelector('.js-search-form'),
+    galleryContainer: document.querySelector('.js-gallery-container'),
+    //loadMoreBtn: document.querySelector('[data-action="load-more"]'),
+};
+
+const loadMoreBtn = new LoadMoreBtn ({
+    selector: '[data-action="load-more"]',
+    hidden: true,
+});
 
 const newsApiService = new NewsApiService();
 
-refs.searchForm.addEventListener('input',onSearch)
-//refs.loadMoreBtn.addEventListener('click', onloadMore);
+refs.searchForm.addEventListener('submit',onSearch);
+loadMoreBtn.refs.button.addEventListener('click', fetchGallery);
 
 
 function onSearch(e) {
     e.preventDefault();
-
+   
    newsApiService.query = e.currentTarget.query.value;
-   newsApiService.resetPage();
-   newsApiService.fetchGallery().then(hits => {
-    clearGalleryContainer();
-    appendHitsMarkup(hits);
-    newsApiService.incrementPage();
-   });
-  
-    if (newsApiService.query === '') {
-      return alert('🌸Введи что-то хорошее🌸 🙃😉');
-    }
-  
+
+   if (newsApiService.query === '') {
+    return alert('Введи что-то хорошее 🙃😉');
+  }
+
+  loadMoreBtn.show();
+  newsApiService.resetPage();
+  clearGalleryContainer();
+  fetchGallery();
 }
 
-function onloadMore() {
-    newsApiService.fetchGallery().then(appendHitsMarkup);
+function fetchGallery(){
+    loadMoreBtn.disable();
+    newsApiService.fetchGallery().then(hits => {
+        appendHitsMarkup(hits);
+        loadMoreBtn.enable();
+    });
 }
 
 function appendHitsMarkup(hits) {
-    refs.gallery.insertAdjacentHTML('beforeend', hitsTpl(hits))
+    refs.galleryContainer.insertAdjacentHTML('beforeend', hitsTpl(hits))
 }
 
 function clearGalleryContainer() {
-    refs.gallery.innerHTML = '';
+    refs.galleryContainer.innerHTML = '';
 }
 
-const onEntry = entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && newsApiService.query !== '') {
-       
-        newsApiService.fetchGallery().then(hits => {
-            appendHitsMarkup(hits);
-            newsApiService.incrementPage();
-        });
-      }
-    });
-};
-const options = {
-    rootMargin: '150px',
-}
-const observer = new IntersectionObserver (onEntry, options);
-observer.observe(refs.sentinel);
+
+
 
 
 

@@ -33,7 +33,7 @@ img {
   padding: 10px;
   margin-bottom: 20px;
   height: 80px;
-  background:  rgb(44, 143, 177);
+  background:  rgb(170, 221, 238);
   
 }
 
@@ -44,6 +44,7 @@ img {
   width: 200px;
   height: 40px;
   background: lightblue;
+  
 }
 
 .button.is-hidden {
@@ -89,5 +90,14 @@ img {
 }
 
 input {
-  background-color: lightblue;
+  background-color:rgb(112, 223, 217);
+  
+}
+
+.mb-2 {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: rgb(95, 236, 189);
+ 
 }

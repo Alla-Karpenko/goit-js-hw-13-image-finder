@@ -5,19 +5,24 @@ export default class NewsApiService {
     constructor() {
         this.searchQuery = '';
         this.page = 1;
+        this.per_page = 12;
     }
 
-    async fetchGallery() {
-        console.log(this);
-        const url = `${BASE_URL}/?image_type=photo&orientation=horizontal&q=${this.searchQuery}&
-        page=${this.page}&per_page=12&webformatURL&likes&views&downloads&comments&key=${API_KEY}`;
+    fetchGallery() {
+        
+        const url = `${BASE_URL}?image_type=photo&orientation=horizontal&q=${this.searchQuery}
+        &per_page=${this.per_page}&page=${this.page}&webformatURL&likes&views&downloads&comments&key=${API_KEY}`;
 
-       const response = await fetch(url);
-        const { hits } = await response.json();
+       return fetch(url)
+       .then(response => response.json())
+       .then(({hits}) => {
+        this.incrementPage();
         return hits;
+       });
+        
     }
 
-    incrementPage () {
+    incrementPage() {
         this.page += 1;
     }
     

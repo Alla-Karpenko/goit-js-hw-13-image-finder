@@ -12,17 +12,25 @@
 
 <body>
 
-    <form class="search-form" id="search-form">
+    <form class="form-inline search-form js-search-form" id="search-form">
+      <div class="form-group mx-sm-3 mb-2"></div>
+        <label for="searchQuery" class="sr-only"></label>
         <input
           type="text"
           name="query"
+          id="searchQuery"
           autocomplete="off"
           placeholder="Search images..."
         />
+      </div>
+      <button type="submit" class="btn btn-primary mb-2">Искать</button>
     </form>
+     
+    <ul class="gallery js-gallery-container">
+      <!-- Список <li> с карточками изображений -->
+    </ul>
 
-
-    <!-- <button
+    <button
       type="button"
       class="btn btn-primary button"
       data-action="load-more"
@@ -31,15 +39,12 @@
         class="spinner-border spinner-border-sm spinner is-hidden"
         role="status"
         aria-hidden="true"
-      ></span>
+      >Load-more</span>
 
-      <span class="label">Load more</span>
-    </button>  -->
+      <span class="label">Load-more</span>
+    </button> 
 
-    <ul class="gallery">
-        <!-- Список <li> с карточками изображений -->
-    </ul>
-   <div id="sentinel"></div>
+    
   
 </body>
 
